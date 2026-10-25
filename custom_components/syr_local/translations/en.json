@@ -1,0 +1,83 @@
+{
+  "config": {
+    "flow_title": "{name}",
+    "step": {
+      "user": {
+        "title": "Connect to the SYR Local add-on",
+        "description": "Enter the address of the SYR Local add-on's state API. When the add-on runs on this Home Assistant, the defaults usually work.",
+        "data": {
+          "host": "Host",
+          "port": "Port"
+        },
+        "data_description": {
+          "host": "Host name or IP address of the add-on, for example local-syr-local.",
+          "port": "Port of the add-on's state API (8099 by default)."
+        }
+      },
+      "hassio_confirm": {
+        "title": "SYR Local add-on found",
+        "description": "Do you want to add {name} (serial {serial}) through the SYR Local add-on? All entities are read-only."
+      },
+      "reconfigure": {
+        "title": "Change the add-on address",
+        "description": "Update the host and port of the SYR Local add-on's state API.",
+        "data": {
+          "host": "Host",
+          "port": "Port"
+        },
+        "data_description": {
+          "host": "Host name or IP address of the add-on, for example local-syr-local.",
+          "port": "Port of the add-on's state API (8099 by default)."
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Cannot reach the SYR Local add-on at this address.",
+      "invalid_response": "The address answered, but not with a valid SYR Local state.",
+      "no_device": "The add-on is running but has not identified the water softener yet. Check the DNS redirect and try again in a minute.",
+      "unsupported_version": "The add-on uses a state API version this integration does not support. Update both to the same release."
+    },
+    "abort": {
+      "already_configured": "This water softener is already configured.",
+      "reconfigure_successful": "The add-on address was updated.",
+      "wrong_device": "This address belongs to a different water softener.",
+      "invalid_discovery_info": "The add-on sent invalid discovery information.",
+      "cannot_connect": "Cannot reach the SYR Local add-on.",
+      "invalid_response": "The add-on did not return a valid SYR Local state.",
+      "no_device": "The add-on has not identified the water softener yet.",
+      "unsupported_version": "The add-on uses a state API version this integration does not support."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "salt_weeks": { "name": "Salt supply" },
+      "salt_kg": { "name": "Salt amount" },
+      "flow_lph": { "name": "Water flow" },
+      "remaining_capacity_l": { "name": "Remaining capacity" },
+      "total_water_l": { "name": "Total water consumption" },
+      "resin_percent": { "name": "Resin capacity" },
+      "pressure_bar": { "name": "Water pressure" },
+      "last_regeneration": { "name": "Last regeneration" },
+      "regeneration_count": { "name": "Regenerations" },
+      "status": { "name": "Status message" },
+      "alarm": { "name": "Alarm" }
+    },
+    "binary_sensor": {
+      "regeneration_running": { "name": "Regeneration" }
+    }
+  },
+  "exceptions": {
+    "cannot_connect": {
+      "message": "Cannot reach the SYR Local add-on."
+    },
+    "invalid_response": {
+      "message": "The SYR Local add-on returned an invalid state."
+    },
+    "unsupported_version": {
+      "message": "The SYR Local add-on uses an unsupported state API version."
+    },
+    "wrong_device": {
+      "message": "The SYR Local add-on is reporting a different water softener."
+    }
+  }
+}

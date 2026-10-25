@@ -1,0 +1,19 @@
+{
+  "entity": {
+    "sensor": {
+      "salt_weeks": { "default": "mdi:shaker-outline" },
+      "salt_kg": { "default": "mdi:shaker" },
+      "flow_lph": { "default": "mdi:water-pump" },
+      "remaining_capacity_l": { "default": "mdi:water-check" },
+      "total_water_l": { "default": "mdi:water" },
+      "resin_percent": { "default": "mdi:gauge" },
+      "last_regeneration": { "default": "mdi:history" },
+      "regeneration_count": { "default": "mdi:counter" },
+      "status": { "default": "mdi:information-outline" },
+      "alarm": { "default": "mdi:alert-outline" }
+    },
+    "binary_sensor": {
+      "regeneration_running": { "default": "mdi:autorenew" }
+    }
+  }
+}

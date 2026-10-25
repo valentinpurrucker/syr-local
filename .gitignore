@@ -1,0 +1,30 @@
+# Secrets / generated TLS material
+server.key
+server.cert
+tls/
+*.pem
+.env
+
+# Dependencies
+node_modules/
+package-lock.json
+bun.lock
+bun.lockb
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.venv/
+venv/
+*.egg-info/
+
+# Logs
+*.log
+requests.log
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/

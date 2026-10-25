@@ -1,0 +1,31 @@
+name: SYR Local
+version: "0.1.0"
+slug: syr_local
+description: Read-only local stand-in for syrconnect.de for SYR LEXplus10S Connect water softeners
+url: https://github.com/valentinpurrucker/syr-local
+arch:
+  - aarch64
+  - amd64
+  - armv7
+startup: application
+boot: auto
+ports:
+  8443/tcp: 443
+  8099/tcp: null
+ports_description:
+  8443/tcp: Device HTTPS endpoint (the device connects to port 443)
+  8099/tcp: Internal state API for the integration (leave unpublished)
+discovery:
+  - syr_local
+watchdog: http://[HOST]:[PORT:8099]/health
+options:
+  poll_interval: 60
+  allowed_device_ips: []
+  log_level: info
+  log_requests: false
+schema:
+  poll_interval: int(10,3600)
+  allowed_device_ips:
+    - str
+  log_level: list(debug|info|warning|error)
+  log_requests: bool

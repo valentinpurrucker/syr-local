@@ -1,0 +1,18 @@
+[project]
+name = "syr-local"
+version = "0.1.0"
+description = "Read-only local bridge for SYR LEXplus10S Connect water softeners (Home Assistant add-on + integration)"
+requires-python = ">=3.13"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# syr_local/ holds the add-on's `server` package; "." makes `custom_components` importable.
+pythonpath = ["syr_local", "."]
+addopts = "-ra"
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+filterwarnings = ["ignore:Unknown config option:pytest.PytestConfigWarning"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"

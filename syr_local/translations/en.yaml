@@ -1,0 +1,22 @@
+configuration:
+  poll_interval:
+    name: Poll interval
+    description: >-
+      Minimum number of seconds between two full read requests to the device.
+      The device itself connects about every 11 seconds.
+  allowed_device_ips:
+    name: Allowed device IPs
+    description: >-
+      Only accept device requests from these IP addresses or networks
+      (for example 192.168.178.130). Leave empty to accept any source.
+  log_level:
+    name: Log level
+    description: Verbosity of the add-on log.
+  log_requests:
+    name: Log raw requests
+    description: >-
+      Write raw device request bodies to /data/requests.log (rotated, at most
+      about 3 MB). The bodies contain the serial number and MAC address.
+network:
+  8443/tcp: Device HTTPS endpoint (the device connects to port 443)
+  8099/tcp: Internal state API for the integration (leave unpublished)

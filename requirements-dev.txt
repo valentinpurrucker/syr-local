@@ -1,0 +1,6 @@
+# Add-on tests (tests/addon, tests/test_contract.py): stdlib + pytest only.
+pytest>=8
+# Integration tests (tests/integration) additionally need Home Assistant's test
+# harness; they are skipped when it is not installed. Requires Python 3.14 for
+# Home Assistant 2026.10.
+# pytest-homeassistant-custom-component
