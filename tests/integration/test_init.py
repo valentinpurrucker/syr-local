@@ -7,7 +7,9 @@ from pytest_homeassistant_custom_component.common import MockConfigEntry, async_
 from custom_components.syr_local.api import CannotConnectError
 from custom_components.syr_local.const import DOMAIN
 from custom_components.syr_local.diagnostics import async_get_config_entry_diagnostics
+from custom_components.syr_local.frontend import CARD_URL, card_digest
 from custom_components.syr_local.models import parse_state
+from homeassistant.components.frontend import DATA_EXTRA_MODULE_URL
 from homeassistant.config_entries import ConfigEntryState
 from homeassistant.const import STATE_OFF, STATE_UNAVAILABLE
 from homeassistant.core import HomeAssistant
@@ -150,3 +152,19 @@ async def test_diagnostics_are_redacted(
     assert diagnostics["state"]["values"]["total_water_l"] == 583939
     assert SERIAL not in str(diagnostics)
     assert "0c:73:eb:50:ce:c9" not in str(diagnostics)
+
+
+async def test_dashboard_card_is_served_and_loaded(
+    hass: HomeAssistant,
+    hass_client,
+    mock_get_state: AsyncMock,
+    config_entry: MockConfigEntry,
+) -> None:
+    await setup(hass, config_entry)
+
+    urls = hass.data[DATA_EXTRA_MODULE_URL].urls
+    assert f"{CARD_URL}?v={card_digest()}" in urls
+
+    response = await (await hass_client()).get(CARD_URL)
+    assert response.status == 200
+    assert 'customElements.define("syr-local-card"' in await response.text()

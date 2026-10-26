@@ -12,16 +12,16 @@ SYR Local has two parts that ship together:
   add-on answers with read-only `get` commands only.
 - **Integration "SYR Local"** (`custom_components/syr_local/`). Discovered
   automatically from the add-on. Creates read-only sensors for salt, flow,
-  capacity, water consumption, regeneration and more.
+  capacity, water consumption, regeneration and more, and ships a compact
+  dashboard card.
 
 ```
 SYR LEXplus10S ──TLS :443──▶ SYR Local add-on ──HTTP :8099──▶ SYR Local integration
                             (getters only)                   (sensors, binary sensor)
 ```
 
-> **Status:** built and tested without the physical device (unit tests, a real
-> TLS server, the Docker image and Home Assistant's own test harness). It has
-> **not yet run against the real softener.** See
+> **Status:** running against a real LEXplus10S. The `getFLO` unit and the
+> time zone of `getLAR` are still unconfirmed. See
 > [What has been verified](#what-has-been-verified).
 
 ## Safety guarantees
@@ -78,6 +78,33 @@ Full instructions, including rollback and the port 443 conflict, are in
 Entities become unavailable when the add-on cannot be reached, it reports a
 different serial number, or the softener has not been heard from for 5 minutes.
 
+## Dashboard card
+
+The integration serves and loads a card of its own, so there is nothing extra
+to install (no HACS frontend repository, no dashboard resource). It packs the
+whole device into one card: status (ready, regenerating, alarm, offline), resin
+charge with soft water left, salt with weeks left, current flow, today's water
+use, the last regeneration, an hourly water graph for the last 24 hours and the
+lifetime counters. Tap any value for its history.
+
+```yaml
+type: custom:syr-local-card
+# all optional:
+device: <device id>        # defaults to the first SYR Local device
+name: Water softener
+salt_warning_weeks: 3      # salt tile turns amber at or below, red at 1 week
+show_graph: true
+```
+
+It also appears in the card picker as **SYR Local** with a visual editor.
+The card, the integration and the add-on options are available in English and
+German; the card follows the language of the Home Assistant user.
+Entities are found through the device, so renaming entity IDs does not break
+it. Colours follow the theme; with card-mod you can override
+`--syr-accent`, `--syr-ok`, `--syr-warning`, `--syr-error` and
+`--syr-tile-background`. "Today" and the graph come from the long-term
+statistics of *Total water consumption*, so they fill in after the first hour.
+
 ## Documentation
 
 - [docs/install.md](docs/install.md): installation, DNS redirect, rollback, troubleshooting
@@ -89,28 +116,31 @@ different serial number, or the softener has not been heard from for 5 minutes.
 
 ## What has been verified
 
+On the real device: the softener connects to the add-on through the DNS
+redirect and all readings appear in Home Assistant.
+
 Without the physical device:
 
 - 128 add-on and contract tests (`pytest`): tolerant parsing, the read-only
   response builder, routing (basic, full, empty, firmware 404, maintenance
   404), the state contract, certificates, config and discovery against a fake
   Supervisor.
-- 34 integration tests on Home Assistant 2026.10.4 (`pytest-homeassistant-custom-component`):
+- 36 integration tests on Home Assistant 2026.10.4 (`pytest-homeassistant-custom-component`):
   config flow (user, hassio, reconfigure), setup and unload, entities and
-  device registry, availability, diagnostics redaction and the API client.
+  device registry, availability, diagnostics redaction, the API client, the
+  German translation and serving the dashboard card.
 - The add-on Docker image (`python:3.13-alpine`, OpenSSL 3.5) builds and
   starts. A TLS 1.2 `AES256-SHA` handshake succeeds with `openssl s_client`,
   and the firmware request returns 404.
 
-Not verified: the real softener connecting to the add-on, which getters it
-actually answers, the `getFLO` unit and the time zone of `getLAR` on this unit,
+Not verified yet: the `getFLO` unit and the time zone of `getLAR` on this unit,
 and Supervisor discovery on a real Home Assistant OS installation.
 
 ## Development
 
 ```sh
 python3 -m pytest tests --ignore=tests/integration      # add-on + contract, stdlib + pytest
-python3.14 -m pytest tests/integration                  # needs pytest-homeassistant-custom-component
+python3.14 -m pytest tests/integration                  # needs pytest-homeassistant-custom-component + home-assistant-frontend
 ```
 
 See [docs/architecture.md](docs/architecture.md) before changing code.

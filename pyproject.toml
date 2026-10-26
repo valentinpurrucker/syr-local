@@ -1,6 +1,6 @@
 [project]
 name = "syr-local"
-version = "0.1.0"
+version = "0.2.0"
 description = "Read-only local bridge for SYR LEXplus10S Connect water softeners (Home Assistant add-on + integration)"
 requires-python = ">=3.13"
 

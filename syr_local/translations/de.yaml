@@ -1,0 +1,22 @@
+configuration:
+  poll_interval:
+    name: Abfrageintervall
+    description: >-
+      Mindestabstand in Sekunden zwischen zwei vollständigen Leseanfragen an
+      das Gerät. Das Gerät selbst meldet sich etwa alle 11 Sekunden.
+  allowed_device_ips:
+    name: Erlaubte Geräte-IPs
+    description: >-
+      Geräteanfragen nur von diesen IP-Adressen oder Netzen annehmen
+      (zum Beispiel 192.168.178.130). Leer lassen, um jede Quelle zuzulassen.
+  log_level:
+    name: Log-Level
+    description: Ausführlichkeit des Add-on-Logs.
+  log_requests:
+    name: Rohanfragen protokollieren
+    description: >-
+      Rohe Anfragen des Geräts in /data/requests.log schreiben (rotiert,
+      höchstens etwa 3 MB). Sie enthalten Seriennummer und MAC-Adresse.
+network:
+  8443/tcp: HTTPS-Endpunkt für das Gerät (das Gerät verbindet sich auf Port 443)
+  8099/tcp: Interne Status-API für die Integration (nicht veröffentlichen)

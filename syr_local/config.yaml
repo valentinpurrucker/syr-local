@@ -1,5 +1,5 @@
 name: SYR Local
-version: "0.1.0"
+version: "0.2.0"
 slug: syr_local
 description: Read-only local stand-in for syrconnect.de for SYR LEXplus10S Connect water softeners
 url: https://github.com/valentinpurrucker/syr-local

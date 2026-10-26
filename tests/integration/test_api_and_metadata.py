@@ -1,4 +1,5 @@
 import json
+import re
 from pathlib import Path
 
 import aiohttp
@@ -66,6 +67,24 @@ def test_translations():
         assert description.translation_key in strings["entity"]["binary_sensor"]
 
 
+def _flatten(tree: dict, prefix: str = "") -> dict[str, str]:
+    flat: dict[str, str] = {}
+    for key, value in tree.items():
+        if isinstance(value, dict):
+            flat.update(_flatten(value, f"{prefix}{key}."))
+        else:
+            flat[f"{prefix}{key}"] = value
+    return flat
+
+
+def test_german_translation_is_complete():
+    english = _flatten(json.loads((INTEGRATION / "translations" / "en.json").read_text()))
+    german = _flatten(json.loads((INTEGRATION / "translations" / "de.json").read_text()))
+    assert german.keys() == english.keys()
+    for key, text in english.items():
+        assert set(re.findall(r"{\w+}", german[key])) == set(re.findall(r"{\w+}", text)), key
+
+
 def test_manifest():
     manifest = json.loads((INTEGRATION / "manifest.json").read_text())
     assert manifest["domain"] == "syr_local"
@@ -73,7 +92,12 @@ def test_manifest():
     assert manifest["integration_type"] == "device"
     assert manifest["iot_class"] == "local_polling"
     assert manifest["requirements"] == []
-    assert manifest["version"] == "0.1.0"
+    # Add-on and integration ship as one product with one version number.
+    addon_version = re.search(
+        r'^version: "([^"]+)"', (INTEGRATION.parents[1] / "syr_local" / "config.yaml").read_text(), re.M
+    )
+    assert addon_version and manifest["version"] == addon_version.group(1)
+    assert set(manifest["dependencies"]) == {"frontend", "http"}
     assert manifest["codeowners"]
     assert "OWNER" not in manifest["documentation"]
 

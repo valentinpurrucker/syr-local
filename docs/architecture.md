@@ -70,7 +70,7 @@ parts (see [state-api.md](state-api.md)). Both sides define the same value keys:
 `syr_local/server/mapping.py::VALUE_KEYS` and
 `custom_components/syr_local/models.py::VALUE_TYPES`. A test
 (`tests/test_contract.py`) fails if they drift apart or if the schema versions
-differ. Add-on and integration are both version 0.1.0.
+differ. Add-on and integration always share one version number.
 
 ## Integration (`custom_components/syr_local/`)
 
@@ -83,6 +83,8 @@ differ. Add-on and integration are both version 0.1.0.
 | `sensor.py`, `binary_sensor.py` | One description tuple and one generic class per platform |
 | `config_flow.py` | `user`, `hassio` (+ confirm) and `reconfigure` steps |
 | `diagnostics.py` | Redacted state and coordinator status |
+| `frontend.py` | Serves `frontend/syr-local-card.js` at `/syr_local/syr-local-card.js` and adds it to every frontend page load (`async_setup`, once per start; `?v=<content hash>` busts the browser cache whenever the file changes) |
+| `frontend/syr-local-card.js` | `custom:syr-local-card`: one plain web component, no build step. Finds the device's entities by platform and translation key in `hass.entities`, reads `hass.states` only, and fetches hourly water use from the recorder statistics of `total_water_l`. Read-only like the rest |
 
 Discovery: when the add-on has seen `getSRN`, it sends
 `{"host": <addon hostname>, "port": 8099, "serial": <serial>}` for the service

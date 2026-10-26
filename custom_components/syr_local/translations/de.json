@@ -1,0 +1,83 @@
+{
+  "config": {
+    "flow_title": "{name}",
+    "step": {
+      "user": {
+        "title": "Mit dem SYR-Local-Add-on verbinden",
+        "description": "Gib die Adresse der Status-API des SYR-Local-Add-ons ein. Wenn das Add-on auf diesem Home Assistant läuft, passen die Vorgaben in der Regel.",
+        "data": {
+          "host": "Host",
+          "port": "Port"
+        },
+        "data_description": {
+          "host": "Hostname oder IP-Adresse des Add-ons, zum Beispiel local-syr-local.",
+          "port": "Port der Status-API des Add-ons (standardmäßig 8099)."
+        }
+      },
+      "hassio_confirm": {
+        "title": "SYR-Local-Add-on gefunden",
+        "description": "Möchtest du {name} (Seriennummer {serial}) über das SYR-Local-Add-on hinzufügen? Alle Entitäten sind schreibgeschützt."
+      },
+      "reconfigure": {
+        "title": "Adresse des Add-ons ändern",
+        "description": "Host und Port der Status-API des SYR-Local-Add-ons aktualisieren.",
+        "data": {
+          "host": "Host",
+          "port": "Port"
+        },
+        "data_description": {
+          "host": "Hostname oder IP-Adresse des Add-ons, zum Beispiel local-syr-local.",
+          "port": "Port der Status-API des Add-ons (standardmäßig 8099)."
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Das SYR-Local-Add-on ist unter dieser Adresse nicht erreichbar.",
+      "invalid_response": "Die Adresse antwortet, aber nicht mit einem gültigen SYR-Local-Status.",
+      "no_device": "Das Add-on läuft, hat die Enthärtungsanlage aber noch nicht erkannt. Prüfe die DNS-Umleitung und versuche es in einer Minute erneut.",
+      "unsupported_version": "Das Add-on nutzt eine Version der Status-API, die diese Integration nicht unterstützt. Aktualisiere beide auf dasselbe Release."
+    },
+    "abort": {
+      "already_configured": "Diese Enthärtungsanlage ist bereits eingerichtet.",
+      "reconfigure_successful": "Die Adresse des Add-ons wurde aktualisiert.",
+      "wrong_device": "Diese Adresse gehört zu einer anderen Enthärtungsanlage.",
+      "invalid_discovery_info": "Das Add-on hat ungültige Discovery-Informationen gesendet.",
+      "cannot_connect": "Das SYR-Local-Add-on ist nicht erreichbar.",
+      "invalid_response": "Das Add-on hat keinen gültigen SYR-Local-Status geliefert.",
+      "no_device": "Das Add-on hat die Enthärtungsanlage noch nicht erkannt.",
+      "unsupported_version": "Das Add-on nutzt eine Version der Status-API, die diese Integration nicht unterstützt."
+    }
+  },
+  "entity": {
+    "sensor": {
+      "salt_weeks": { "name": "Salzvorrat" },
+      "salt_kg": { "name": "Salzmenge" },
+      "flow_lph": { "name": "Durchfluss" },
+      "remaining_capacity_l": { "name": "Restkapazität" },
+      "total_water_l": { "name": "Gesamtwasserverbrauch" },
+      "resin_percent": { "name": "Harzkapazität" },
+      "pressure_bar": { "name": "Wasserdruck" },
+      "last_regeneration": { "name": "Letzte Regeneration" },
+      "regeneration_count": { "name": "Regenerationen" },
+      "status": { "name": "Statusmeldung" },
+      "alarm": { "name": "Alarm" }
+    },
+    "binary_sensor": {
+      "regeneration_running": { "name": "Regeneration" }
+    }
+  },
+  "exceptions": {
+    "cannot_connect": {
+      "message": "Das SYR-Local-Add-on ist nicht erreichbar."
+    },
+    "invalid_response": {
+      "message": "Das SYR-Local-Add-on hat einen ungültigen Status geliefert."
+    },
+    "unsupported_version": {
+      "message": "Das SYR-Local-Add-on nutzt eine nicht unterstützte Version der Status-API."
+    },
+    "wrong_device": {
+      "message": "Das SYR-Local-Add-on meldet eine andere Enthärtungsanlage."
+    }
+  }
+}
